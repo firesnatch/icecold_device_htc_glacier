@@ -1,0 +1,90 @@
+#!/system/bin/sh
+
+# ==============================================================
+# Optimize SQlite databases of apps
+# ==============================================================
+
+echo "";
+echo "*********************************************";
+echo "Optimizing and defragging your database files (*.db)";
+echo "Ignore the 'database disk image is malformed' error";
+echo "Ignore the 'no such collation sequence' error";
+echo "*********************************************";
+echo "";
+
+for i in \
+`busybox find /data -iname "*.db"`; 
+do \
+	/system/xbin/sqlite3 $i 'VACUUM;'; 
+	/system/xbin/sqlite3 $i 'REINDEX;'; 
+done;
+
+if [ -d "/dbdata" ]; then
+	for i in \
+	`busybox find /dbdata -iname "*.db"`; 
+	do \
+		/system/xbin/sqlite3 $i 'VACUUM;'; 
+		/system/xbin/sqlite3 $i 'REINDEX;'; 
+	done;
+fi;
+
+
+if [ -d "/datadata" ]; then
+	for i in \
+	`busybox find /datadata -iname "*.db"`; 
+	do \
+		/system/xbin/sqlite3 $i 'VACUUM;'; 
+		/system/xbin/sqlite3 $i 'REINDEX;'; 
+	done;
+fi;
+
+
+for i in \
+`busybox find /sdcard -iname "*.db"`; 
+do \
+	/system/xbin/sqlite3 $i 'VACUUM;'; 
+	/system/xbin/sqlite3 $i 'REINDEX;'; 
+done;
+
+
+# Fix Contacts Pics
+CONTACT_DATA_DIR="/data/data/com.android.providers.contacts"
+CONTACT_PIC_DIR="$CONTACT_DATA_DIR/files"
+CONTACT_DB="$CONTACT_DATA_DIR/databases/contacts2.db"
+
+if [ -d "$CONTACT_PIC_DIR" ]; then
+  echo "Fixing contacts permissions"
+  chmod 666 $CONTACT_PIC_DIR/*
+  chmod 664 *.png
+fi;
+
+if [ -f "$SQLITE" ]; then
+  RESTCONT=`$SQLITE $CONTACT_DB 'SELECT count(*) FROM raw_contacts WHERE is_restricted=1';`
+  if [ "$RESTCONT" != 0 ] ; then
+    echo "Fixing contacts restrictions"
+    $SQLITE $CONTACT_DB 'UPDATE raw_contacts SET is_restricted=0 WHERE is_restricted=1';
+  fi
+fi
+
+# LedMeKnow Fix
+busybox chmod 666 /sys/devices/platform/leds-microp/leds/amber/blink
+busybox chmod 666 /sys/devices/platform/leds-microp/leds/amber/brightness
+#busybox chmod 666 /sys/devices/platform/leds-microp/leds/blue/brightness
+busybox chmod 666 /sys/devices/platform/leds-microp/leds/green/blink
+busybox chmod 666 /sys/devices/platform/leds-microp/leds/green/brightness
+
+#Disable normalize sleeper
+echo "Disable normalize sleeper"
+#mount -t debugfs none /sys/kernel/debug
+echo NO_NORMALIZED_SLEEPER > /sys/kernel/debug/sched_features
+
+# Mount system as rw
+echo "Mounting system as rw"
+busybox mount -o rw,remount /system
+#sysrw
+
+# Set FileSystem
+sync;
+setprop cm.filesystem.ready 1;
+setprop dc.filesystem.ready 1;
+setprop oxygen.filesystem.ready 1;
