@@ -212,15 +212,15 @@ PRODUCT_COPY_FILES += \
     device/htc/glacier/vold.fstab:system/etc/vold.fstab
 
 PRODUCT_COPY_FILES += \
-    device/htc/glacier/kernel/modules/bcm4329.ko:system/lib/modules/bcm4329.ko \
+    device/htc/glacier/kernel/modules/bcm4329.ko:system/lib/modules/bcm4329.ko
 #    device/htc/glacier/kernel/modules/qc_pcm_in.ko:system/lib/modules/qc_pcm_in.ko \
 #    device/htc/glacier/kernel/modules/auth_rpcgss.ko:system/lib/modules/auth_rpcgss.ko \
-    device/htc/glacier/kernel/modules/nfs.ko:system/lib/modules/nfs.ko \
+#    device/htc/glacier/kernel/modules/nfs.ko:system/lib/modules/nfs.ko \
 #    device/htc/glacier/kernel/modules/rpcsec_gss_krb5.ko:system/lib/modules/rpcsec_gss_krb5.ko \
 #    device/htc/glacier/kernel/modules/lockd.ko:system/lib/modules/lockd.ko \
 #    device/htc/glacier/kernel/modules/sunrpc.ko:system/lib/modules/sunrpc.ko \
-    device/htc/glacier/kernel/modules/cifs.ko:system/lib/modules/cifs.ko \
-    device/htc/glacier/kernel/modules/tun.ko:system/lib/modules/tun.ko
+#    device/htc/glacier/kernel/modules/cifs.ko:system/lib/modules/cifs.ko \
+#    device/htc/glacier/kernel/modules/tun.ko:system/lib/modules/tun.ko
 
 PRODUCT_COPY_FILES += \
     device/htc/glacier/proprietary/TPA2051_CFG.csv:system/etc/TPA2051_CFG.csv \
