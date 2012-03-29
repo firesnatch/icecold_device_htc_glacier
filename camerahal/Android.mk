@@ -20,18 +20,15 @@ LOCAL_PRELINK_MODULE := false
 #ifeq ($(BOARD_HAVE_HTC_FFC), true)
     LOCAL_CFLAGS += -DHTC_FFC
 #endif
-#ifeq ($(BOARD_FFC_HAS_OFFSET), true)
-    LOCAL_CFLAGS += -DOFFSET_FFC
-#endif
-ifeq ($(BOARD_USE_REVERSE_FFC), true)
+#ifeq ($(BOARD_USE_REVERSE_FFC), true)
     LOCAL_CFLAGS += -DREVERSE_FFC
-endif
+#endif
 ifeq ($(TARGET_USE_CAF_PARAMS), true)
     LOCAL_CFLAGS += -DCAF_PARAMS
 endif
-ifeq ($(CAMERA_CONVERT_COLORS),true)
-    LOCAL_CFLAGS += -DCPU_COLOR_CONVERT
-endif
+#ifeq ($(TARGET_INVERSE_ROTATE), true)
+    LOCAL_CFLAGS += -DINVERSE_ORIENTATION
+#endif
 
 include $(BUILD_SHARED_LIBRARY)
 
